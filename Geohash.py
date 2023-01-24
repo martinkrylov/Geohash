@@ -1,6 +1,6 @@
 class Geohash:
     base32 = "0123456789bcdefghjkmnpqrstuvwxyz"
-    MAX_PRECISION = 12
+    MAX_PRECISION = 18
     LONGITUDE_MIN = -180
     LONGITUDE_MAX = 180
     LATITUDE_MIN = -90
@@ -70,5 +70,14 @@ class Geohash:
         if(not Geohash.isValidLongitude(longitude)): 
             raise ValueError('Invalid Longitude')
             return false
+
+    @staticmethod
+    def adjacent(geohash, direction):
+        geohash = geohash.lower()
+        direction = direction.lower()
+
+        if(len(geohash) == 0):
+            raise ValueError('Invalid Geohash')
+
 
         
