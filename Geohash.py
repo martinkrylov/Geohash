@@ -90,7 +90,7 @@ class Geohash:
 
         if(len(geohash) == 0):
             raise ValueError('Invalid Geohash')
-        if('nsew'.index(direction) == -1):
+        if('nsew'.find(direction) == -1):
             raise ValueError('Invalid Direction')
         
         lastCh = geohash[-1]
@@ -98,10 +98,23 @@ class Geohash:
 
         type = len(geohash)%2
 
-        if(Geohash.BORDER[direction][type].index(lastCh) != -1 and parent != ''):
+        if(Geohash.BORDER[direction][type].find(lastCh) != -1 and parent != ''):
             parent = Geohash.adjacent(parent, direction)
         
-        return parent + Geohash.base32.charAt(Geohash.NEIGHBOUR[direction][type].index(lastCh))
+        return parent + Geohash.base32[(Geohash.NEIGHBOUR[direction][type].find(lastCh))]
+    
+    @staticmethod
+    def neighbours(geohash):
+        return {
+            'n':  Geohash.adjacent(geohash, 'n'),
+            'ne': Geohash.adjacent(Geohash.adjacent(geohash, 'n'), 'e'),
+            'e':  Geohash.adjacent(geohash, 'e'),
+            'se': Geohash.adjacent(Geohash.adjacent(geohash, 's'), 'e'),
+            's':  Geohash.adjacent(geohash, 's'),
+            'sw': Geohash.adjacent(Geohash.adjacent(geohash, 's'), 'w'),
+            'w':  Geohash.adjacent(geohash, 'w'),
+            'nw': Geohash.adjacent(Geohash.adjacent(geohash, 'n'), 'w'),
+        }
 
 
         
