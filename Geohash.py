@@ -5,6 +5,18 @@ class Geohash:
     LONGITUDE_MAX = 180
     LATITUDE_MIN = -90
     LATITUDE_MAX = 90
+    NEIGHBOUR = {
+        'n': [ 'p0r21436x8zb9dcf5h7kjnmqesgutwvy', 'bc01fg45238967deuvhjyznpkmstqrwx' ],
+        's': [ '14365h7k9dcfesgujnmqp0r2twvyx8zb', '238967debc01fg45kmstqrwxuvhjyznp' ],
+        'e': [ 'bc01fg45238967deuvhjyznpkmstqrwx', 'p0r21436x8zb9dcf5h7kjnmqesgutwvy' ],
+        'w': [ '238967debc01fg45kmstqrwxuvhjyznp', '14365h7k9dcfesgujnmqp0r2twvyx8zb' ],
+    }
+    BORDER = {
+        'n': [ 'prxz',     'bcfguvyz' ],
+        's': [ '028b',     '0145hjnp' ],
+        'e': [ 'bcfguvyz', 'prxz'     ],
+        'w': [ '0145hjnp', '028b'     ],
+    }     
 
     #Given a laitude and longitude returns a geohash with the given precision
     @staticmethod
@@ -78,6 +90,18 @@ class Geohash:
 
         if(len(geohash) == 0):
             raise ValueError('Invalid Geohash')
+        if('nsew'.index(direction) == -1):
+            raise ValueError('Invalid Direction')
+        
+        lastCh = geohash[-1]
+        parent = geohash[0:-1]
+
+        type = len(geohash)%2
+
+        if(Geohash.BORDER[direction][type].index(lastCh) != -1 and parent != ''):
+            parent = Geohash.adjacent(parent, direction)
+        
+        return parent + Geohash.base32.charAt(Geohash.NEIGHBOUR[direction][type].index(lastCh))
 
 
         
